@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "./ui/button";
+import { Link } from "wouter";
 
 export default function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,7 +25,6 @@ export default function MobileMenu() {
   const menuItems = [
     { label: "О нас", id: "about" },
     { label: "Услуги", id: "services" },
-    { label: "Эксперты", id: "experts" },
     { label: "Кейсы", id: "cases" },
     { label: "Тарифы", id: "pricing" },
     { label: "Контакты", id: "contact" },
@@ -74,22 +74,33 @@ export default function MobileMenu() {
                   </motion.button>
                 ))}
 
+                <Link href="/experts">
+                  <motion.button
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.5 }}
+                    onClick={() => setIsOpen(false)}
+                    className="text-lg hover:text-primary transition-colors py-2 text-left w-full"
+                  >
+                    Эксперты
+                  </motion.button>
+                </Link>
+
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.6 }}
                   className="pt-4 space-y-3"
                 >
-                  <Button 
-                    variant="outline" 
-                    className="w-full"
-                    onClick={() => {
-                      setIsOpen(false);
-                      alert('ИИ-Агенты - функция в разработке');
-                    }}
-                  >
-                    ИИ-Агенты
-                  </Button>
+                  <Link href="/ai-agents">
+                    <Button 
+                      variant="outline" 
+                      className="w-full"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      ИИ-Агенты
+                    </Button>
+                  </Link>
                   <Button 
                     className="w-full bg-gradient-to-r from-primary to-accent"
                     onClick={() => scrollToSection('contact')}

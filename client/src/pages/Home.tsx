@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import MobileMenu from "@/components/MobileMenu";
+import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { 
   Brain, 
@@ -64,21 +65,22 @@ export default function Home() {
             <div className="hidden md:flex items-center space-x-8">
               <button onClick={() => scrollToSection('about')} className="text-sm hover:text-primary transition-colors">О нас</button>
               <button onClick={() => scrollToSection('services')} className="text-sm hover:text-primary transition-colors">Услуги</button>
-              <button onClick={() => scrollToSection('experts')} className="text-sm hover:text-primary transition-colors">Эксперты</button>
+              <Link href="/experts"><button className="text-sm hover:text-primary transition-colors">Эксперты</button></Link>
               <button onClick={() => scrollToSection('cases')} className="text-sm hover:text-primary transition-colors">Кейсы</button>
               <button onClick={() => scrollToSection('pricing')} className="text-sm hover:text-primary transition-colors">Тарифы</button>
               <button onClick={() => scrollToSection('contact')} className="text-sm hover:text-primary transition-colors">Контакты</button>
             </div>
 
             <div className="flex items-center space-x-4">
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="hidden md:inline-flex"
-                onClick={() => alert('ИИ-Агенты - функция в разработке')}
-              >
-                ИИ-Агенты
-              </Button>
+              <Link href="/ai-agents">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className="hidden md:inline-flex"
+                >
+                  ИИ-Агенты
+                </Button>
+              </Link>
               <Button 
                 size="sm" 
                 className="hidden sm:inline-flex bg-gradient-to-r from-primary to-accent hover:opacity-90"
@@ -171,14 +173,15 @@ export default function Home() {
                 Получить консультацию
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 glass-card"
-                onClick={() => scrollToSection('experts')}
-              >
-                Посмотреть каталог экспертов
-              </Button>
+              <Link href="/experts">
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 glass-card"
+                >
+                  Посмотреть каталог экспертов
+                </Button>
+              </Link>
             </motion.div>
           </motion.div>
         </div>
