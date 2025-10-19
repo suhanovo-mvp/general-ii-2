@@ -16,8 +16,35 @@ import {
   Linkedin,
   Mail
 } from "lucide-react";
+import { useEffect } from "react";
 
 export default function Home() {
+  // Smooth scroll function
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offset = 80; // Height of fixed navbar
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+  };
+
+  // Handle hash links on page load
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash) {
+      setTimeout(() => {
+        const id = hash.replace('#', '');
+        scrollToSection(id);
+      }, 100);
+    }
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
@@ -27,26 +54,36 @@ export default function Home() {
             <motion.div 
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="flex items-center space-x-2"
+              className="flex items-center space-x-2 cursor-pointer"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             >
               <Brain className="w-8 h-8 text-primary" />
               <span className="text-xl font-bold gradient-text">ГенералИИ</span>
             </motion.div>
             
             <div className="hidden md:flex items-center space-x-8">
-              <a href="#about" className="text-sm hover:text-primary transition-colors">О нас</a>
-              <a href="#services" className="text-sm hover:text-primary transition-colors">Услуги</a>
-              <a href="#experts" className="text-sm hover:text-primary transition-colors">Эксперты</a>
-              <a href="#cases" className="text-sm hover:text-primary transition-colors">Кейсы</a>
-              <a href="#pricing" className="text-sm hover:text-primary transition-colors">Тарифы</a>
-              <a href="#contact" className="text-sm hover:text-primary transition-colors">Контакты</a>
+              <button onClick={() => scrollToSection('about')} className="text-sm hover:text-primary transition-colors">О нас</button>
+              <button onClick={() => scrollToSection('services')} className="text-sm hover:text-primary transition-colors">Услуги</button>
+              <button onClick={() => scrollToSection('experts')} className="text-sm hover:text-primary transition-colors">Эксперты</button>
+              <button onClick={() => scrollToSection('cases')} className="text-sm hover:text-primary transition-colors">Кейсы</button>
+              <button onClick={() => scrollToSection('pricing')} className="text-sm hover:text-primary transition-colors">Тарифы</button>
+              <button onClick={() => scrollToSection('contact')} className="text-sm hover:text-primary transition-colors">Контакты</button>
             </div>
 
             <div className="flex items-center space-x-4">
-              <Button variant="outline" size="sm" className="hidden md:inline-flex">
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="hidden md:inline-flex"
+                onClick={() => alert('ИИ-Агенты - функция в разработке')}
+              >
                 ИИ-Агенты
               </Button>
-              <Button size="sm" className="hidden sm:inline-flex bg-gradient-to-r from-primary to-accent hover:opacity-90">
+              <Button 
+                size="sm" 
+                className="hidden sm:inline-flex bg-gradient-to-r from-primary to-accent hover:opacity-90"
+                onClick={() => scrollToSection('contact')}
+              >
                 Получить консультацию
               </Button>
               <MobileMenu />
@@ -126,11 +163,20 @@ export default function Home() {
               transition={{ delay: 0.5 }}
               className="flex flex-col sm:flex-row items-center justify-center gap-4 px-4"
             >
-              <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-primary to-accent hover:opacity-90 text-base sm:text-lg px-6 sm:px-8">
+              <Button 
+                size="lg" 
+                className="w-full sm:w-auto bg-gradient-to-r from-primary to-accent hover:opacity-90 text-base sm:text-lg px-6 sm:px-8"
+                onClick={() => scrollToSection('contact')}
+              >
                 Получить консультацию
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
-              <Button size="lg" variant="outline" className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 glass-card">
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 glass-card"
+                onClick={() => scrollToSection('experts')}
+              >
                 Посмотреть каталог экспертов
               </Button>
             </motion.div>
@@ -141,7 +187,8 @@ export default function Home() {
         <motion.div
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 cursor-pointer"
+          onClick={() => scrollToSection('stats')}
         >
           <div className="w-6 h-10 border-2 border-primary/50 rounded-full flex items-start justify-center p-2">
             <motion.div 
@@ -154,7 +201,7 @@ export default function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-card/50">
+      <section id="stats" className="py-16 bg-card/50">
         <div className="container">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8">
             {[
@@ -293,7 +340,12 @@ export default function Home() {
           </div>
 
           <div className="text-center mt-8 sm:mt-12">
-            <Button size="lg" variant="outline" className="glass-card">
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="glass-card"
+              onClick={() => scrollToSection('services')}
+            >
               Подробнее об услугах
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
@@ -301,8 +353,90 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Experts Section (placeholder) */}
+      <section id="experts" className="py-16 sm:py-20">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+              Наши <span className="gradient-text">эксперты</span>
+            </h2>
+            <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto px-4">
+              База из 200+ квалифицированных специалистов готовых к работе над вашим проектом
+            </p>
+            <Button 
+              size="lg" 
+              className="bg-gradient-to-r from-primary to-accent hover:opacity-90"
+              onClick={() => alert('Каталог экспертов - функция в разработке')}
+            >
+              Посмотреть каталог
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Cases Section (placeholder) */}
+      <section id="cases" className="py-16 sm:py-20 bg-card/50">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+              Наши <span className="gradient-text">кейсы</span>
+            </h2>
+            <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto px-4">
+              Более 50 успешно реализованных проектов для госсектора
+            </p>
+            <Button 
+              size="lg" 
+              variant="outline"
+              className="glass-card"
+              onClick={() => alert('Кейсы - функция в разработке')}
+            >
+              Смотреть кейсы
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Pricing Section (placeholder) */}
+      <section id="pricing" className="py-16 sm:py-20">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+              <span className="gradient-text">Тарифы</span>
+            </h2>
+            <p className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto px-4">
+              Гибкие тарифные планы для проектов любого масштаба
+            </p>
+            <Button 
+              size="lg" 
+              className="bg-gradient-to-r from-primary to-accent hover:opacity-90"
+              onClick={() => scrollToSection('contact')}
+            >
+              Обсудить проект
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
+          </motion.div>
+        </div>
+      </section>
+
       {/* CTA Section */}
-      <section className="py-16 sm:py-20 relative overflow-hidden gradient-bg">
+      <section id="contact" className="py-16 sm:py-20 relative overflow-hidden gradient-bg">
         <div className="absolute inset-0 opacity-20">
           <motion.div 
             animate={{ 
@@ -345,14 +479,37 @@ export default function Home() {
               Получите бесплатную консультацию и узнайте, как ИИ может трансформировать ваш бизнес
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-primary to-accent hover:opacity-90 text-base sm:text-lg px-6 sm:px-8">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+              <Button 
+                size="lg" 
+                className="w-full sm:w-auto bg-gradient-to-r from-primary to-accent hover:opacity-90 text-base sm:text-lg px-6 sm:px-8"
+                onClick={() => window.open('mailto:info@generalii.ru', '_blank')}
+              >
                 Получить консультацию
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
-              <Button size="lg" variant="outline" className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 glass-card">
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 glass-card"
+                onClick={() => scrollToSection('cases')}
+              >
                 Смотреть кейсы
               </Button>
+            </div>
+
+            <div className="glass-card p-6 rounded-xl max-w-md mx-auto">
+              <h3 className="font-semibold mb-4">Контактная информация</h3>
+              <div className="space-y-2 text-sm text-muted-foreground">
+                <p className="flex items-center justify-center gap-2">
+                  <Mail className="w-4 h-4" />
+                  <a href="mailto:info@generalii.ru" className="hover:text-primary transition-colors">
+                    info@generalii.ru
+                  </a>
+                </p>
+                <p>Телефон: +7 (495) 123-45-67</p>
+                <p>Москва, Россия</p>
+              </div>
             </div>
           </motion.div>
         </div>
@@ -363,7 +520,7 @@ export default function Home() {
         <div className="container">
           <div className="grid md:grid-cols-3 gap-8 mb-8">
             <div>
-              <div className="flex items-center space-x-2 mb-4">
+              <div className="flex items-center space-x-2 mb-4 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
                 <Brain className="w-6 h-6 text-primary" />
                 <span className="font-bold gradient-text">ГенералИИ</span>
               </div>
@@ -371,13 +528,26 @@ export default function Home() {
                 Передовые AI-технологии для государственного сектора
               </p>
               <div className="flex items-center space-x-3">
-                <a href="#" className="w-9 h-9 rounded-lg glass-card flex items-center justify-center hover:border-primary/50 transition-colors">
+                <a 
+                  href="https://github.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 rounded-lg glass-card flex items-center justify-center hover:border-primary/50 transition-colors"
+                >
                   <Github className="w-4 h-4" />
                 </a>
-                <a href="#" className="w-9 h-9 rounded-lg glass-card flex items-center justify-center hover:border-primary/50 transition-colors">
+                <a 
+                  href="https://linkedin.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 rounded-lg glass-card flex items-center justify-center hover:border-primary/50 transition-colors"
+                >
                   <Linkedin className="w-4 h-4" />
                 </a>
-                <a href="#" className="w-9 h-9 rounded-lg glass-card flex items-center justify-center hover:border-primary/50 transition-colors">
+                <a 
+                  href="mailto:info@generalii.ru"
+                  className="w-9 h-9 rounded-lg glass-card flex items-center justify-center hover:border-primary/50 transition-colors"
+                >
                   <Mail className="w-4 h-4" />
                 </a>
               </div>
@@ -386,17 +556,21 @@ export default function Home() {
             <div>
               <h4 className="font-semibold mb-4">Навигация</h4>
               <div className="space-y-2 text-sm text-muted-foreground">
-                <a href="#about" className="block hover:text-primary transition-colors">О нас</a>
-                <a href="#services" className="block hover:text-primary transition-colors">Услуги</a>
-                <a href="#experts" className="block hover:text-primary transition-colors">Эксперты</a>
-                <a href="#cases" className="block hover:text-primary transition-colors">Кейсы</a>
+                <button onClick={() => scrollToSection('about')} className="block hover:text-primary transition-colors">О нас</button>
+                <button onClick={() => scrollToSection('services')} className="block hover:text-primary transition-colors">Услуги</button>
+                <button onClick={() => scrollToSection('experts')} className="block hover:text-primary transition-colors">Эксперты</button>
+                <button onClick={() => scrollToSection('cases')} className="block hover:text-primary transition-colors">Кейсы</button>
               </div>
             </div>
 
             <div>
               <h4 className="font-semibold mb-4">Контакты</h4>
               <div className="space-y-2 text-sm text-muted-foreground">
-                <p>Email: info@generalii.ru</p>
+                <p>
+                  <a href="mailto:info@generalii.ru" className="hover:text-primary transition-colors">
+                    Email: info@generalii.ru
+                  </a>
+                </p>
                 <p>Телефон: +7 (495) 123-45-67</p>
                 <p>Москва, Россия</p>
               </div>

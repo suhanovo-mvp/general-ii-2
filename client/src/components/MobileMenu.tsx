@@ -6,13 +6,28 @@ import { Button } from "./ui/button";
 export default function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
 
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offset = 80;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+    setIsOpen(false);
+  };
+
   const menuItems = [
-    { label: "О нас", href: "#about" },
-    { label: "Услуги", href: "#services" },
-    { label: "Эксперты", href: "#experts" },
-    { label: "Кейсы", href: "#cases" },
-    { label: "Тарифы", href: "#pricing" },
-    { label: "Контакты", href: "#contact" },
+    { label: "О нас", id: "about" },
+    { label: "Услуги", id: "services" },
+    { label: "Эксперты", id: "experts" },
+    { label: "Кейсы", id: "cases" },
+    { label: "Тарифы", id: "pricing" },
+    { label: "Контакты", id: "contact" },
   ];
 
   return (
@@ -47,17 +62,16 @@ export default function MobileMenu() {
             >
               <nav className="flex flex-col space-y-4 mt-16">
                 {menuItems.map((item, index) => (
-                  <motion.a
-                    key={item.href}
-                    href={item.href}
+                  <motion.button
+                    key={item.id}
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    onClick={() => setIsOpen(false)}
-                    className="text-lg hover:text-primary transition-colors py-2"
+                    onClick={() => scrollToSection(item.id)}
+                    className="text-lg hover:text-primary transition-colors py-2 text-left"
                   >
                     {item.label}
-                  </motion.a>
+                  </motion.button>
                 ))}
 
                 <motion.div
@@ -66,10 +80,20 @@ export default function MobileMenu() {
                   transition={{ delay: 0.6 }}
                   className="pt-4 space-y-3"
                 >
-                  <Button variant="outline" className="w-full">
+                  <Button 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={() => {
+                      setIsOpen(false);
+                      alert('ИИ-Агенты - функция в разработке');
+                    }}
+                  >
                     ИИ-Агенты
                   </Button>
-                  <Button className="w-full bg-gradient-to-r from-primary to-accent">
+                  <Button 
+                    className="w-full bg-gradient-to-r from-primary to-accent"
+                    onClick={() => scrollToSection('contact')}
+                  >
                     Получить консультацию
                   </Button>
                 </motion.div>
